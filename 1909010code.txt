@@ -1,0 +1,239 @@
+DROP TABLE HOSTEL;
+DROP TABLE ADMINISTRATOR;
+DROP TABLE Student;
+DROP TABLE Room;
+DROP TABLE Visitors;
+DROP TABLE FURNITURE;
+DROP TABLE PAYMENT;
+DROP TABLE RoomAllotment;
+CREATE TABLE HOSTEL(
+	HOSTEL_ID NUMBER(10) NOT NULL,
+	HOSTEL_NAME VARCHAR(20) NOT NULL,
+	NO_OF_ROOM int NOT NULL,
+	NO_OF_STUDENTS int NOT NULL,
+	PRIMARY KEY (HOSTEL_ID)
+);
+CREATE TABLE ADMINISTRATOR(
+	ID NUMBER(10) NOT NULL,
+	FNAME VARCHAR(30) NOT NULL,
+	LNAME VARCHAR(30) NOT NULL, 
+    MOBILE_NO VARCHAR(20),
+    Hostel_id NUMBER(10) NOT NULL,
+      FOREIGN KEY(Hostel_id) REFERENCES HOSTEL(HOSTEL_ID),
+	PRIMARY KEY (ID)
+); 
+CREATE TABLE Room(
+    Hostel_id NUMBER(10) not null,
+    FOREIGN KEY(Hostel_id) REFERENCES HOSTEL(HOSTEL_ID),
+    Room_id NUMBER(10) not null,
+    PRIMARY key(Room_id),
+    Room_Occupancy number(10) NOT NULL,
+    Room_Booking_State Varchar(10)
+    );
+CREATE TABLE Student(
+	Student_ID NUMBER(10) NOT NULL,
+    primary key(Student_ID),
+	FNAME VARCHAR(30) NOT NULL,
+	LNAME VARCHAR(30) NOT NULL, 
+    MOBILE_NO VARCHAR(20),
+    Dept VARCHAR(30),
+    Year_of_study VARCHAR(20),
+    Hostel_id NUMBER(10) NOT NULL,
+      FOREIGN KEY(Hostel_id) REFERENCES HOSTEL(HOSTEL_ID),
+      Room_id NUMBER(10) NOT NULL,
+      FOREIGN key(Room_id) REFERENCES Room(Room_id)
+); 
+CREATE TABLE Visitors(
+	Visitors_ID NUMBER(10) NOT NULL,
+    PRIMARY key(Visitors_ID),
+	in_time timestamp,
+	Out_time timestamp,
+	Visitor_Name VARCHAR(15) NOT NULL,
+	 STUDENT_ID NUMBER(10) NOT NULL,
+     FOREIGN key(STUDENT_ID) REFERENCES Student(Student_ID)
+	);
+CREATE TABLE FURNITURE(
+	Furniture_ID NUMBER(10) NOT NULL,
+    PRIMARY key(Furniture_ID),
+	Furniture_type VARCHAR(20) NOT NULL,
+    HOSTEL_ID NUMBER(10) NOT NULL,
+    FOREIGN key(HOSTEL_ID) REFERENCES HOSTEL(HOSTEL_ID),
+    ROOM_ID number(10) not null,
+    FOREIGN key(ROOM_ID) REFERENCES Room(Room_id)
+);
+CREATE TABLE PAYMENT( 
+    pay_id number(10) NOT NULL,
+    primary key(pay_id),
+    pay_date DATE,
+    pay_amt int not null,
+    pay_desc varchar(10) ,
+    Student_ID number(10) not null,
+    foreign key (Student_ID) REFERENCES Student(Student_ID)
+);
+create table RoomAllotment(
+    STUDENT_ID NUMBER(10) NOT NULL,
+     FOREIGN key(STUDENT_ID) REFERENCES Student(Student_ID),
+     Studentname varchar (20) not null,
+      ROOM_ID number(10) not null,
+    FOREIGN key(ROOM_ID) REFERENCES Room(Room_id),
+    AllocatedDate Date,
+    RentalPeriod INTERVAL Year to Month,
+    AllocationID number(10) not null,
+    primary key(AllocationID));
+    set pagesize 250;
+    set linesize 230;
+
+    
+insert into HOSTEL values(01,'ROKEYA Hall',120,1000);
+insert into HOSTEL values(02,'Amar Ekushey Hall',150,2000);
+insert into HOSTEL values(03,'Mujibur Rahman Hall',180,1300);
+insert into HOSTEL values(04,'Rashid Hall',110,1700);
+insert into HOSTEL values(05,'Lalon Shah Hall',134,800);
+insert into HOSTEL values(06,'Fajlul Haque Hall',105,1400);
+insert into HOSTEL values(07,'Khan Jahan Ali Hall',125,1200);
+
+
+insert into ADMINISTRATOR values(001,'Shuheli','Sayla','015784279',01);
+insert into ADMINISTRATOR values(002,'Nourin','Mohsin','015784289',01);
+insert into ADMINISTRATOR values(003,'Farjana','Afroj','0157856279',01);
+insert into ADMINISTRATOR values(004,'Abdul','Hafiz','0157484279',05);
+insert into ADMINISTRATOR values(005,'Golam','Kibria','018784279',05);
+insert into ADMINISTRATOR values(006,'Sumon','Debnath','016784279',05);
+insert into ADMINISTRATOR values(007,'Ariful Islam',' Khandaker','Ext.783',02);
+insert into ADMINISTRATOR values(008,'Md. Anik',' Hasan','8113',02);
+insert into ADMINISTRATOR values(009,'Md. Mehrab',' Hossain','8116',02);
+insert into ADMINISTRATOR values(010,'Md. Faysal',' Hassan','8613',03);
+insert into ADMINISTRATOR values(011,'Priyo',' Roy','8513',03);
+insert into ADMINISTRATOR values(012,'Md. Alamgir',' Hosain','8913',03);
+insert into ADMINISTRATOR values(013,'Md. Parvej',' ahmed','8163',04);
+insert into ADMINISTRATOR values(014,'Abrar',' Das','8553',04);
+insert into ADMINISTRATOR values(015,'Ayon',' Saha','8345',06);
+insert into ADMINISTRATOR values(016,'Md. Elias',' Uddin','81983',06);
+insert into ADMINISTRATOR values(017,'Ashikur',' Jaman','5113',07);
+insert into ADMINISTRATOR values(018,'Fahim',' Haider','8523',07);
+
+
+
+Insert into Room values(01,1016,4,'Yes');
+
+Insert into Room values(01,2012,3,'Yes');
+
+Insert into Room values(01,215,4,'No');
+
+Insert into Room values(02,108,2,'No');
+
+Insert into Room values(02,110,2,'Yes');
+
+Insert into Room values(05,115,3,'No');
+
+Insert into Room values(06,8,2,'Yes');
+
+
+Insert into Room values(07,12,3,'No');
+
+
+
+insert into Student values(1905,'Shameema','Afreen','016784289','ECE','Third',01,1016);
+insert into Student values(1911,'Arifin','Nir','0169084289','ME','Third',01,2012);
+insert into Student values(2199,'Ayesha','Katun','019784289','EEE','First',01,215);
+insert into Student values(2052,'Mushrat','Jahan','016784679','BME','second',01,108);
+insert into Student values(2209,'Udoy','Hassan','016784975','ESE','First',02,12);
+insert into Student values(2071,'Md','Najid','0165484289','TE','second',02,108);
+insert into Student values(1997,'Tanvir','Fahim','0189084289','ME','Third',02,108);
+insert into Student values(1841,'Rownok','Islam','016784989','CSE','Fourth',02,110);
+insert into Student values(2231,'Anik','Jahin','016784280','EEE','First',03,115);
+insert into Student values(2001,'Sudip','Haque','016774289','MSE','second',03,8);
+insert into Student values(1991,'Pial','Ghosh','016784259','URP','Third',03,12);
+insert into Student values(1803,'Abid','Hasan','014784289','CE','Fourth',03,2012);
+insert into Student values(2201,'Niloy','Mondol','016784254','EEE','First',04,110);
+insert into Student values(2044,'Sumit','DAS','0167904289','BME','second',04,215);
+insert into Student values(1989,'Priom','Paul','0167800289','ECE','Third',04,1016);
+insert into Student values(1820,'Mahbub','Noyon','0167840889','BME','Fourth',04,215);
+insert into Student values(2278,'Srijit','Halder','0167842800','ME','First',05,2012);
+insert into Student values(2012,'Shanto','Roy','016784267','ME','second',05,108);
+insert into Student values(1923,'Pranto','Dey','016984289','ESE','Third',05,110);
+insert into Student values(1851,'Najmus','Sakib','016704289','ESE','Fourth',05,115);
+insert into Student values(2141,'Samir','Aslam','013784289','CE','First',06,8);
+insert into Student values(2061,'Naimur','islam','016744289','CE','second',06,8);
+insert into Student values(1925,'Nibodon','Khan','016784559','URP','Third',06,8);
+insert into Student values(1810,'Dipu','Hasan','016784245','ARChi','Fouth',06,8);
+insert into Student values(2111,'MD','Anas','016788889','TE','First',07,108);
+insert into Student values(2024,'Sakib','Khan','016784239','TE','second',07,110);
+insert into Student values(1937,'MD','Mridul','016784282','ECE','Third',07,115);
+
+
+
+
+
+
+
+Insert into FURNITURE values(41,'Bed',01,1016);
+
+Insert into FURNITURE values(51,'Table',01,1016);
+
+Insert into FURNITURE values(81,'Chair',01,1016);
+
+
+Insert into FURNITURE values(31,'Bed',02, 2012);
+
+Insert into FURNITURE values(61,'Chair',02, 2012);
+
+Insert into FURNITURE values(43,'Table',06, 108);
+
+Insert into FURNITURE values(44,'Table',06, 108);
+
+Insert into FURNITURE values(71,'Chair',07, 115);
+
+Insert into FURNITURE values(47,'Bed',07, 115);
+
+INSERT INTO Visitors VALUES (010, TO_DATE('2023-11-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-11-12 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Nitu', 1905);
+
+
+
+Insert into Visitors values (011, TO_DATE('2022-11-11 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2022-11-12 12:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Mahi', 1911);
+Insert into Visitors values (012, TO_DATE('2023-01-14 13:34:51', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-01-12 21:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Neru', 2199);
+Insert into Visitors values (013, TO_DATE('2023-12-11 14:23:56', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-12-12 23:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Milu', 2024);
+Insert into Visitors values (014, TO_DATE('2021-11-11 17:44:56', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2021-11-12 13:34:56', 'YYYY-MM-DD HH24:MI:SS'), 'Maliha', 1851);
+Insert into Visitors values (015, TO_DATE('2023-10-13 18:41:12', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-10-14 14:04:56', 'YYYY-MM-DD HH24:MI:SS'), 'Ador', 2278);
+Insert into Visitors values (016, TO_DATE('2023-09-14 14:41:12', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-10-18 18:04:56', 'YYYY-MM-DD HH24:MI:SS'), 'Adri', 2061);
+Insert into Visitors values (017, TO_DATE('2023-01-13 19:41:12', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2023-02-14 17:04:56', 'YYYY-MM-DD HH24:MI:SS'), 'Avro', 1925);
+
+
+INSERT INTO PAYMENT VALUES (1, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 500, 'Tuition', 1937);
+INSERT INTO PAYMENT VALUES(2,  TO_DATE('2023-11-12','YYYY-MM-DD'), 200, 'Books', 2111);
+
+INSERT INTO PAYMENT VALUES (3,TO_DATE( '2023-11-13','YYYY-MM-DD'),300, 'Fees', 2024);
+INSERT INTO PAYMENT VALUES(4, TO_DATE('2023-11-14','YYYY-MM-DD'), 150, 'Meal fees', 1937);
+INSERT INTO PAYMENT VALUES(5, TO_DATE('2023-11-15','YYYY-MM-DD'),400, 'Tuition', 1810);
+INSERT INTO PAYMENT VALUES(6,TO_DATE( '2023-11-16','YYYY-MM-DD'),250, 'Fees', 1820);
+INSERT INTO PAYMENT VALUES(7,TO_DATE( '2023-11-17','YYYY-MM-DD'),100, 'Books', 2061);
+
+
+
+
+INSERT INTO RoomAllotment VALUES (1989, 'John Doe', 1016, TO_DATE('2023-11-11','YYYY-MM-DD'), INTERVAL '1' YEAR, 12);
+
+INSERT INTO RoomAllotment VALUES (1803, 'Jane Smith', 2012, TO_DATE('2023-11-12','YYYY-MM-DD'), INTERVAL '6' MONTH, 23);
+
+INSERT INTO RoomAllotment VALUES (2278, 'Alice Johnson', 108,TO_DATE( '2023-11-1','YYYY-MM-DD'), INTERVAL '2' YEAR, 35);
+
+INSERT INTO RoomAllotment VALUES (2012, 'Bob Williams', 108,TO_DATE( '2023-11-3','YYYY-MM-DD'), INTERVAL '3' MONTH, 49);
+
+INSERT INTO RoomAllotment VALUES (2012, 'Eva Davis', 215, TO_DATE('2023-11-5','YYYY-MM-DD'), INTERVAL '1' YEAR, 54);
+
+
+INSERT INTO RoomAllotment VALUES (2012, 'Charlie Brown', 115, TO_DATE('2023-11-6','YYYY-MM-DD'), INTERVAL '6' MONTH, 60);
+
+INSERT INTO RoomAllotment VALUES (2044, 'Grace Miller', 115, TO_DATE('2023-11-7','YYYY-MM-DD'), INTERVAL '2' YEAR, 73);
+
+INSERT INTO RoomAllotment VALUES (2278, 'David Taylor', 8,TO_DATE('2023-11-7','YYYY-MM-DD'), INTERVAL '2' YEAR, 73);
+
+
+select *from Student;
+select *from HOSTEL;
+select *from ADMINISTRATOR;
+select *from RoomAllotment;
+select *from Room;
+select *from Visitors;
+select *from PAYMENT;
+select *from FURNITURE;
